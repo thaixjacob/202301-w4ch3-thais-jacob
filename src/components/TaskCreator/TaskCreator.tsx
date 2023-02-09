@@ -1,17 +1,20 @@
-import { FC, FormEventHandler } from "react";
+import { FC, FormEvent, FormEventHandler, useState } from "react";
 
 interface InputProps {
+  //para enviar essa info a mi padre a traves de una funcion
   OnUpdate: (names: string) => void;
 }
 
 const TaskCreator: FC<InputProps> = ({ OnUpdate }) => {
-  const handlerClick: FormEventHandler<HTMLFormElement> = (e) => {
+  const [taskValue, updateValue] = useState("");
+  const handlerClick = (e: FormEvent<HTMLFormElement>) => {
+    //para escuchar mi submit
     e.preventDefault();
-    OnUpdate(e.currentTarget.word.value);
+    OnUpdate(taskValue);
   };
   return (
     <form onSubmit={handlerClick}>
-      <input data-testid="task-input" type="text" name="word" />
+      <input name="word" onChange={(e) => updateValue(e.currentTarget.value)} />
       <button type="submit">Send</button>
     </form>
   );
